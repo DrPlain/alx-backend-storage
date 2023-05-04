@@ -3,7 +3,7 @@
 
 -- Create a view that changes NULL to 2020 in column split
 CREATE OR REPLACE VIEW old_school_band AS
-SELECT band_name, formed, COALESCE(split, 2020) AS split, style
+SELECT band_name, formed, COALESCE(split, 2023) AS split, style
 FROM metal_bands;
 
 -- Use the created view to filter required data
