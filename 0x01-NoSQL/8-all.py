@@ -8,4 +8,3 @@ def list_all(mongo_collection):
         return []
     else:
         return mongo_collection.find()
-
