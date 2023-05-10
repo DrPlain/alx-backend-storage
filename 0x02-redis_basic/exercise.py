@@ -28,8 +28,8 @@ def call_history(method: Callable) -> Callable:
     """ A decorator to store the history of inputs
     and outputs for a particular function"""
 
-    input_key = method.__qualname__ + ":inputs"
-    output_key = method.__qualname__ + ":outputs"
+    input_key = "".join([method.__qualname__, ":inputs"])
+    output_key = "".join([method.__qualname__, ":outputs"])
 
     @wraps(method)
     def wrapper(self, *args, **kwargs):
