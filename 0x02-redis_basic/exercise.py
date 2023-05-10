@@ -19,7 +19,7 @@ def count_calls(method: Callable) -> Callable:
     def wrapper(self, args, **kwargs):
         """A wrapper"""
         self._redis.incr(key)
-        return method(self, args, **kwargs)
+        return method(self, *args, **kwargs)
 
     return wrapper
 
@@ -32,10 +32,10 @@ def call_history(method: Callable) -> Callable:
     output_key = method.__qualname__ + ":outputs"
 
     @wraps(method)
-    def wrapper(self, args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         """A wrapper"""
         self._redis.rpush(input_key, str(args))
-        result = method(self, args, **kwargs)
+        result = method(self, *args, **kwargs)
         self._redis.rpush(output_key, str(result))
         return result
 
@@ -50,8 +50,8 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    @call_history
     @count_calls
+    @call_history
     def store(self, data: Types) -> str:
         """ generates a random key ans stores data in redis with the key"""
         key = str(uuid.uuid4())
