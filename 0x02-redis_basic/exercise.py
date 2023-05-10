@@ -19,7 +19,9 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self: 'Cache', key: str, fn=None):
+    def get(self: 'Cache', key: str,
+            fn: Callable[[Union[int, float, str, str]],
+                         Union[int, float, str, str]] = None):
         """Converts data back to desired format using fn"""
         data = self._redis.get(key)
         if data and fn:
