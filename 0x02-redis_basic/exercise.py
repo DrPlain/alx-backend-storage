@@ -5,6 +5,8 @@ import uuid
 import sys
 from typing import Union, Callable, Optional
 
+Types = Union[str, bytes, int, float]
+
 
 class Cache:
     """ Cache class """
@@ -14,13 +16,13 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self: 'Cache', data: Union[str, bytes, int, float]) -> str:
+    def store(self, data: Types) -> str:
         """ generates a random key ans stores data in redis with the key"""
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[Callable]):
+    def get(self, key: str, fn: Optional[Callable] = None) -> Types:
         """Converts data back to desired format using fn"""
         if fn:
             return fn(self._redis.get(key))
